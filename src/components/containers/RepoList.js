@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Form, FormControl, Image, ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getRepos, updateRepoSearch } from '../../redux/actions/repos';
 
 const styles = {
@@ -49,7 +50,9 @@ const RepoList = () => {
                     <Card.Title>{repo.name}</Card.Title>
                     <Card.Body>
                         <Image src={repo.owner.avatar_url} style={styles.img} roundedCircle /> By <a href={repo.owner.html_url} target='_blank' rel="noreferrer">{repo.owner.login}</a>
-                        <Button variant="primary" style={styles.button}>Ver más</Button>
+                        <Link to={`/repositorios/${repo.owner.login}/${repo.name}`}>
+                            <Button variant="primary" style={styles.button}>Ver más</Button>
+                        </Link>
                     </Card.Body>
                 </ListGroup.Item>
                 )}

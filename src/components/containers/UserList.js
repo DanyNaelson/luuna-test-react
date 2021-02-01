@@ -49,7 +49,9 @@ const UserList = () => {
                     </Link>
                     <Card.Body className='text-center'>
                         <Card.Title>{`@${user.login}`}</Card.Title>
-                        <Button variant="primary">Ver más</Button>
+                        <Link to={`/usuarios/${user.id}`}>
+                            <Button variant="primary">Ver más</Button>
+                        </Link>
                     </Card.Body>
                     <Card.Footer>
                         Github url: <a href={user.html_url} target='_blank' rel="noreferrer"><small className="text-muted">{user.html_url}</small></a>

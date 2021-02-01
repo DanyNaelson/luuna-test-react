@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Repo from '../components/containers/Repo';
 import User from '../components/containers/User';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
@@ -17,6 +18,9 @@ const index = () => {
             </Route>
             <Route path="/usuarios">
                 <Users />
+            </Route>
+            <Route path="/repositorios/:user/:name">
+                <Repo />
             </Route>
             <Route path="/repositorios">
                 <Repos />

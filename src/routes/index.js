@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from '../pages/Home';
+import NotFound from '../pages/NotFound';
 import Repos from '../pages/Repos';
 import Users from '../pages/Users';
 
@@ -15,6 +16,9 @@ const index = () => {
           </Route>
           <Route path="/repositorios">
             <Repos />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
     );

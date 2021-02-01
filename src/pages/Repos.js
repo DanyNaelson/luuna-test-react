@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const Repos = () => {
     return (
-        <div>
+        <Container fluid>
             Repositorios
-        </div>
+        </Container>
     );
 };
 

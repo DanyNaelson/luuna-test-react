@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { apiGet } from '../../ApiRest';
 
 const styles = {
     card: {
@@ -15,8 +16,7 @@ const User = () => {
 
     useEffect(() => {
         if(params.hasOwnProperty('id')){
-            fetch(`https://api.github.com/users/${params.id}`)
-                .then(res => res.json())
+            apiGet(`https://api.github.com/users/${params.id}`)()
                 .then(
                     (result) => {
                         setUser(result)

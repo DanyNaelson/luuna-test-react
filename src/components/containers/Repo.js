@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import { apiGet } from '../../ApiRest';
 
 const styles = {
     card: {
@@ -16,8 +17,7 @@ const Repo = () => {
 
     useEffect(() => {
         if(params.hasOwnProperty('user') && params.hasOwnProperty('name')){
-            fetch(`https://api.github.com/repos/${params.user}/${params.name}`)
-                .then(res => res.json())
+            apiGet(`https://api.github.com/repos/${params.user}/${params.name}`)()
                 .then(
                     (result) => {
                         setRepo(result)

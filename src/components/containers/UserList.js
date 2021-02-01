@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Card, CardColumns, Form, FormControl } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { apiGet } from '../../ApiRest';
 import { getUsers, updateUserSearch } from '../../redux/actions/users';
 
 const styles = {
@@ -16,8 +17,7 @@ const UserList = () => {
     const users = useSelector((state) => state.users.all)
 
     useEffect(() => {
-        fetch("https://api.github.com/users")
-            .then(res => res.json())
+        apiGet("https://api.github.com/users")()
             .then(
                 (result) => {
                     let filteredUsers = result

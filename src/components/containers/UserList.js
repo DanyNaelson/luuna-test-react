@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, CardColumns, Form, FormControl } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getUsers, updateUserSearch } from '../../redux/actions/users';
 
 const styles = {
@@ -41,9 +42,11 @@ const UserList = () => {
             <CardColumns>
                 {users.map(user =>
                 <Card key={user.id}>
-                    <Card.Img variant="top" src={user.avatar_url}
-                        style={styles.cardImg}
-                    />
+                    <Link to={`/usuarios/${user.id}`}>
+                        <Card.Img variant="top" src={user.avatar_url}
+                            style={styles.cardImg}
+                        />
+                    </Link>
                     <Card.Body className='text-center'>
                         <Card.Title>{`@${user.login}`}</Card.Title>
                         <Button variant="primary">Ver más</Button>

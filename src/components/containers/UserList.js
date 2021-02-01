@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Card, CardColumns, Form, FormControl } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Alert, Button, Card, CardColumns, Form, FormControl, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { apiGet } from '../../ApiRest';
@@ -8,18 +8,28 @@ import { getUsers, updateUserSearch } from '../../redux/actions/users';
 const styles = {
     cardImg: {
         cursor: 'pointer'
+    },
+    spinner: {
+        borderWidth: '.5em',
+        display: 'block',
+        height: 100,
+        margin: '0 auto',
+        width: 100
     }
 }
 
 const UserList = () => {
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const searchValue = useSelector((state) => state.users.searchValue)
     const users = useSelector((state) => state.users.all)
 
     useEffect(() => {
+        setLoading(true)
         apiGet("https://api.github.com/users")()
             .then(
                 (result) => {
+                    setLoading(false)
                     let filteredUsers = result
 
                     if(searchValue !== "" || searchValue !== undefined)
@@ -28,6 +38,7 @@ const UserList = () => {
                     dispatch(getUsers(filteredUsers))
                 },
                 (error) => {
+                    setLoading(false)
                     console.log(error)
                 }
             )
@@ -40,7 +51,7 @@ const UserList = () => {
                 <FormControl type="text" placeholder="Buscar" className="mr-sm-2" value={searchValue} onChange={e => dispatch(updateUserSearch(e.target.value))} />
             </Form>
             <CardColumns>
-                {users.map(user =>
+                {!loading && users.map(user =>
                 <Card key={user.id}>
                     <Link to={`/usuarios/${user.id}`}>
                         <Card.Img variant="top" src={user.avatar_url}
@@ -59,6 +70,14 @@ const UserList = () => {
                 </Card>
                 )}
             </CardColumns>
+            {users.length === 0 && !loading &&
+            <Alert variant="danger">
+                No hay usuarios
+            </Alert>   
+            }
+            {loading &&
+            <Spinner style={styles.spinner} animation="border" variant="info" />
+            }
         </>
     );
 };

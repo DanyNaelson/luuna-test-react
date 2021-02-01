@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Card, Form, FormControl, Image, ListGroup } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Alert, Button, Card, Form, FormControl, Image, ListGroup, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { apiGet } from '../../ApiRest';
@@ -13,18 +13,28 @@ const styles = {
     img: {
         cursor: 'pointer',
         maxWidth: 50
+    },
+    spinner: {
+        borderWidth: '.5em',
+        display: 'block',
+        height: 100,
+        margin: '0 auto',
+        width: 100
     }
 }
 
 const RepoList = () => {
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const searchValue = useSelector((state) => state.repos.searchValue)
     const repos = useSelector((state) => state.repos.all)
 
     useEffect(() => {
+        setLoading(true)
         apiGet("https://api.github.com/repositories")()
             .then(
                 (result) => {
+                    setLoading(false)
                     let filteredRepos = result
 
                     if(searchValue !== "" || searchValue !== undefined)
@@ -33,6 +43,7 @@ const RepoList = () => {
                     dispatch(getRepos(filteredRepos))
                 },
                 (error) => {
+                    setLoading(false)
                     console.log(error)
                 }
             )
@@ -45,7 +56,7 @@ const RepoList = () => {
                 <FormControl type="text" placeholder="Buscar" className="mr-sm-2" value={searchValue} onChange={e => dispatch(updateRepoSearch(e.target.value))} />
             </Form>
             <ListGroup variant="flush">
-                {repos.map(repo => 
+                {!loading && repos.map(repo => 
                 <ListGroup.Item key={repo.id}>
                     <Card.Title>{repo.name}</Card.Title>
                     <Card.Body>
@@ -57,6 +68,14 @@ const RepoList = () => {
                 </ListGroup.Item>
                 )}
             </ListGroup>
+            {repos.length === 0 && !loading && 
+            <Alert variant="danger">
+                No hay repositorios
+            </Alert>   
+            }
+            {loading &&
+            <Spinner style={styles.spinner} animation="border" variant="info" />
+            }
         </>
     );
 };
